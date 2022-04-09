@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>399</width>
-    <height>169</height>
+    <width>369</width>
+    <height>183</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,7 +23,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>enter seperator string: (numbers 01 - 99 will be appended.</string>
+    <string>enter seperator string: (numbers 01 - 99 will be appended.)</string>
    </property>
   </widget>
   <widget class="QLineEdit" name="lineEditSeparator">
@@ -31,7 +31,7 @@
     <rect>
      <x>20</x>
      <y>70</y>
-     <width>351</width>
+     <width>291</width>
      <height>20</height>
     </rect>
    </property>
@@ -39,8 +39,8 @@
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">
     <rect>
-     <x>210</x>
-     <y>120</y>
+     <x>150</x>
+     <y>110</y>
      <width>156</width>
      <height>23</height>
     </rect>
