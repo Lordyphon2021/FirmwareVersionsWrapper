@@ -18,12 +18,12 @@
     <rect>
      <x>20</x>
      <y>50</y>
-     <width>321</width>
+     <width>361</width>
      <height>16</height>
     </rect>
    </property>
    <property name="text">
-    <string>enter seperator string:</string>
+    <string>enter seperator string: (numbers 01 - 99 will be appended.</string>
    </property>
   </widget>
   <widget class="QLineEdit" name="lineEditSeparator">

@@ -10,6 +10,7 @@
 #include <QPixmap>
 #include <QStandardPaths>
 #include "servercredentialsdialog.h"
+#include "separator_dialog.h"
 
 
 
@@ -122,7 +123,7 @@ VersionWrapper::VersionWrapper(QWidget* parent)
     QFile sep_file(QDir::homePath() + "/VersionWrapper/Preferences/separator.txt");
     sep_file.open(QIODevice::ReadOnly | QIODevice::Text);
     separator_string = sep_file.readLine();
-    ui->label_separator->setText(url);
+    ui->label_separator->setText(separator_string);
     sep_file.close();
 
     if (separator_string.isEmpty())
@@ -154,8 +155,12 @@ void VersionWrapper::OnWrapButton() {
     QDir source(path_to_dir);
     QStringList files_in_source = source.entryList(QStringList() << "*.HEX" << "*.hex", QDir::Files);
     qDebug() << files_in_source;
-    QString separator_string = "FIRM_VERSION";
-    int version_number = 1;
+    
+   
+    
+    QString seperator_string_saved = separator_string;
+    
+    int version_number = 0;
     //open destination file
     QFile destin_file(QDir::homePath() + "/VersionWrapper/Converted/firmware_collection.txt");
     destin_file.open(QIODevice::WriteOnly | QIODevice::Text);
@@ -171,10 +176,19 @@ void VersionWrapper::OnWrapButton() {
     //open each hex file and write content to destination file, divided by seperator line
     foreach(QString filename, files_in_source) {
         QString version_number_string = QString::number(version_number++);
-        separator_string += version_number_string; //write seperator line
+        
+        //add prefix zero 
+        if (version_number < 10) {
+            version_number_string = "0" + QString::number(version_number);
+            separator_string +=  version_number_string; //write seperator line
+        }
+        else  
+            separator_string += version_number_string; //write seperator line
+        
+        
         ui->status_label->setText("wrapping " + filename);
         out << separator_string << '\n';
-        separator_string = "FIRM_VERSION";
+        
 
         QFile sourcefile(path_to_dir + "/" + filename);
 
@@ -190,7 +204,8 @@ void VersionWrapper::OnWrapButton() {
 
         }
         sourcefile.close();
-
+        separator_string = seperator_string_saved;
+    
     } //END: foreach(QString filename, files_in_source){
 
     destin_file.close();
@@ -243,7 +258,9 @@ void VersionWrapper::OnActionSetUrl() {
 
 }
 void VersionWrapper::OnActionSeparatorString() {
-
+    Separator_dialog* sep_dial = new Separator_dialog;
+    connect(sep_dial, SIGNAL(SeparatorStringSignal(QString)), this, SLOT(OnSeparatorStringSignal(QString)));
+    sep_dial->exec();
 
 
 
