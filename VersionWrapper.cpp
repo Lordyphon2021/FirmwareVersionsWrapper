@@ -149,7 +149,7 @@ VersionWrapper::~VersionWrapper()
 
 void VersionWrapper::OnWrapButton() {
 
-    //HEXFILES MUST HAVE FOLLOWING SEPERATOR LINES TO BE RECOGNIZED CORRECTLY BY LordyLink: "FIRM_VERSION00" TO "FIRM_VERSION99"
+    
     ui->status_label->setText("looking for files...");
 
     QDir source(path_to_dir);
