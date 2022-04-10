@@ -22,7 +22,6 @@ public:
     ~VersionWrapper();
     void allowConnection(){};
 
-
 public slots:
     //push buttons
     void OnWrapButton();
