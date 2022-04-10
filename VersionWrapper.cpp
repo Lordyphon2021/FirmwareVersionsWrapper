@@ -14,10 +14,6 @@
 
 
 
-
-
-
-
 VersionWrapper::VersionWrapper(QWidget* parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -41,6 +37,7 @@ VersionWrapper::VersionWrapper(QWidget* parent)
     preferences->addAction(separator_string_triggered);
     preferences->addAction(about_triggered);
     ui->pushButton->hide();
+    
     //wire up
     connect(ui->WrapButton, SIGNAL(clicked()), this, SLOT(OnWrapButton()));
     connect(source_path_triggered, SIGNAL(triggered()), this, SLOT(OnActionSetSourceDir()));
@@ -48,16 +45,15 @@ VersionWrapper::VersionWrapper(QWidget* parent)
     connect(separator_string_triggered, SIGNAL(triggered()), this, SLOT(OnActionSeparatorString()));
     connect(about_triggered, SIGNAL(triggered()), this, SLOT(OnActionAbout()));
     connect(server_credentials_triggered, SIGNAL(triggered()), this, SLOT(OnActionServer()));
+    
     //setup folders
     QDir pref(QDir::homePath() + "/VersionWrapper/Preferences");
     if (!pref.exists())
         pref.mkpath(".");
 
-
     QDir converted(QDir::homePath() + "/VersionWrapper/Converted");
     if (!converted.exists())
         converted.mkpath(".");
-
 
     //get saved path to source folder from preferences
     QFile file(QDir::homePath() + "/VersionWrapper/Preferences/pref.txt");
@@ -70,7 +66,6 @@ VersionWrapper::VersionWrapper(QWidget* parent)
         //if nothing there, open file dialog
         ui->label_source_folder->setText("not set");
         path_to_dir = QFileDialog::getExistingDirectory(this, "set path to firmware files", QDir::homePath());
-
 
         //save path to preferences
         QFile file(QDir::homePath() + "/VersionWrapper/Preferences/pref.txt");
@@ -91,7 +86,6 @@ VersionWrapper::VersionWrapper(QWidget* parent)
         QDir saved_source(path_to_dir);
         if (!saved_source.exists())
             saved_source.mkpath(".");
-
     }
 
     //get saved upload url from preferences folder
@@ -104,7 +98,6 @@ VersionWrapper::VersionWrapper(QWidget* parent)
     if (url.isEmpty())
         ui->url_label->setText("not set");
 
-
     //get saved server credentials from preferences
     QFile cred(QDir::homePath() + "/VersionWrapper/Preferences/credentials.txt");
     cred.open(QIODevice::ReadOnly | QIODevice::Text);
@@ -115,7 +108,6 @@ VersionWrapper::VersionWrapper(QWidget* parent)
     for (int i = 0; i < user_name.size(); ++i) {
         if (user_name.at(i) == '\n')
             user_name.remove(i, 1);
-
     }
     ui->label_server_credentials->setText("user: " + user_name + "  password: " + password);
 
@@ -135,7 +127,6 @@ VersionWrapper::VersionWrapper(QWidget* parent)
     QPalette pal;
     pal.setBrush(QPalette::Background, bkgrd);
     this->setPalette(pal);
-
 }
 
 VersionWrapper::~VersionWrapper()
@@ -145,7 +136,6 @@ VersionWrapper::~VersionWrapper()
 
 void VersionWrapper::OnWrapButton() {
 
-    
     ui->status_label->setText("looking for files...");
 
     QDir source(path_to_dir);
@@ -159,7 +149,7 @@ void VersionWrapper::OnWrapButton() {
     //create textstream
     QTextStream out(&destin_file);
 
-    if (files_in_source.isEmpty()) {
+    if(files_in_source.isEmpty()) {
         QMessageBox error;
         error.setText("no HEX files found!");
         error.exec();
@@ -177,7 +167,6 @@ void VersionWrapper::OnWrapButton() {
         else  
             separator_string += version_number_string; //write seperator line
         
-        
         ui->status_label->setText("wrapping " + filename);
         out << separator_string << '\n';
         
@@ -192,11 +181,9 @@ void VersionWrapper::OnWrapButton() {
         while (!sourcefile.atEnd()) { // read from file and write lines to destination textfile
             QByteArray templine = sourcefile.readLine();
             out << templine;
-
         }
         sourcefile.close();
         separator_string = seperator_string_saved;
-    
     } //END: foreach(QString filename, files_in_source){
 
     destin_file.close();
@@ -215,15 +202,13 @@ void VersionWrapper::OnWrapButton() {
 }
 
 // on check file button
-void VersionWrapper::on_pushButton_clicked()
-{
+void VersionWrapper::on_pushButton_clicked(){
     QString file_name = QFileDialog::getOpenFileName(this, "file", QDir::homePath() + "/VersionWrapper/Converted/firmware_collection.txt");
-
 }
 
 //preferences menu (set source dir) triggered
 void VersionWrapper::OnActionSetSourceDir() {
-
+    
     path_to_dir = QFileDialog::getExistingDirectory(this, "set path to firmware files", QDir::homePath());
 
     QDir new_source(path_to_dir);
@@ -247,10 +232,10 @@ void VersionWrapper::OnActionSetUrl() {
 
 }
 void VersionWrapper::OnActionSeparatorString() {
+    
     Separator_dialog* sep_dial = new Separator_dialog;
     connect(sep_dial, SIGNAL(SeparatorStringSignal(QString)), this, SLOT(OnSeparatorStringSignal(QString)));
     sep_dial->exec();
-
 }
 
 //preferences menu (about) triggered
@@ -270,6 +255,7 @@ void VersionWrapper::OnActionServer() {
 
 //not needed...
 QString VersionWrapper::backslashreplacer(QString input) {
+    
     for (size_t i = 0; i < input.size(); ++i) {
         if (input.at(i) == '\\')
             input.replace(i, 1, '/');
@@ -332,6 +318,5 @@ void VersionWrapper::OnSeparatorStringSignal(QString _separator_string) {
 
         ui->label_separator->setText(separator_string);
     }
-
 }
 
