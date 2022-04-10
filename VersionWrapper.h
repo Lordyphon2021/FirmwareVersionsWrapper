@@ -26,6 +26,8 @@ public slots:
     //push buttons
     void OnWrapButton();
     void on_pushButton_clicked();
+    //QTimer
+    void checkOnlineStatus();
     //menu
     void OnActionSetUrl();
     void OnActionSetSourceDir();
@@ -48,6 +50,8 @@ private:
     QString separator_string;
     SetUrlDialog* seturldlg = nullptr;
     QString backslashreplacer(QString input);
+    bool connection_status = false;
+    int download_ctr = 0;
 
 
 };

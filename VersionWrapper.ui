@@ -56,14 +56,17 @@
    <widget class="QLabel" name="status_label">
     <property name="geometry">
      <rect>
-      <x>510</x>
+      <x>320</x>
       <y>420</y>
-      <width>171</width>
+      <width>361</width>
       <height>20</height>
      </rect>
     </property>
     <property name="text">
      <string/>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton">

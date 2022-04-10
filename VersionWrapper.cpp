@@ -11,7 +11,7 @@
 #include <QStandardPaths>
 #include "servercredentialsdialog.h"
 #include "separator_dialog.h"
-
+#include <QTimer>
 
 
 VersionWrapper::VersionWrapper(QWidget* parent)
@@ -127,6 +127,12 @@ VersionWrapper::VersionWrapper(QWidget* parent)
     QPalette pal;
     pal.setBrush(QPalette::Background, bkgrd);
     this->setPalette(pal);
+
+    QTimer* hot_plug_timer = new QTimer(this);
+    connect(hot_plug_timer, SIGNAL(timeout()), this, SLOT(checkOnlineStatus()));
+    hot_plug_timer->start(10000);
+
+    checkOnlineStatus();
 }
 
 VersionWrapper::~VersionWrapper()
@@ -135,7 +141,7 @@ VersionWrapper::~VersionWrapper()
 }
 
 void VersionWrapper::OnWrapButton() {
-
+    download_ctr = 0;
     ui->status_label->setText("looking for files...");
 
     QDir source(path_to_dir);
@@ -185,7 +191,7 @@ void VersionWrapper::OnWrapButton() {
         sourcefile.close();
         separator_string = seperator_string_saved;
     } //END: foreach(QString filename, files_in_source){
-
+    qDebug() << destin_file.size(); //testfile: 537092 bytes
     destin_file.close();
     ui->status_label->setText("done wrapping...");
     //make "check file" button visible
@@ -194,12 +200,59 @@ void VersionWrapper::OnWrapButton() {
     //QString upload_url = "ftp://stefandeisenberger86881@ftp.lordyphon.com/firmware_versions/firmware_versions.txt";
     QString path_to_file = QDir::homePath() + "/VersionWrapper/Converted/firmware_collection.txt";
 
-    Networker* uploader = new Networker;
-    connect(uploader, SIGNAL(send_status(QString)), this, SLOT(OnNetworkStatusSignal(QString)));
+    
+    
+    Networker* try_upload = new Networker;
+    connect(try_upload, SIGNAL(send_status(QString)), this, SLOT(OnNetworkStatusSignal(QString)));
+   
     //QNetworkAccessMAnager runs as own thread in background
-    uploader->upload(url, path_to_file);
+    if(connection_status == true)
+        try_upload->upload(url, path_to_file);
+    else {
+        QMessageBox error;
+        error.setText("no internet connection!");
+        error.exec();
+    }
 
 }
+void VersionWrapper::checkOnlineStatus() {
+    download_ctr++;
+    
+    qDebug() << "QTimer timeout, checking for internet connection";
+    Networker* network = new Networker;
+    connect(network, SIGNAL(download_finished(QString)), this, SLOT(OnNetworkStatusSignal(QString)));
+    
+    QFile testfile(QDir::homePath() + "/VersionWrapper/testfile.txt");
+    
+    
+    if (testfile.size() == 0 || download_ctr == 7) {
+        download_ctr = 8;
+        network->download("ftp://stefandeisenberger86881@ftp.lordyphon.com/firmware_versions/testfile.txt", QDir::homePath() + "/VersionWrapper/testfile.txt", user_name, password);
+
+    }
+    while(!testfile.open(QIODevice::ReadOnly | QIODevice::Text))
+        ;
+    
+    if (testfile.readLine() == "onlinechecker") {
+        connection_status = true;
+        ui->status_label->setText( "online" );
+    }
+    else {
+        connection_status = false;
+        ui->status_label->setText("offline");
+        
+    }
+    if(testfile.isOpen())
+        testfile.close();
+
+    
+    //QNetworkAccessMAnager runs as own thread in background
+    //network->upload(url, path_to_file);
+
+
+
+}
+
 
 // on check file button
 void VersionWrapper::on_pushButton_clicked(){

@@ -45,8 +45,8 @@ void Networker::finished(QNetworkReply* reply){
 
     file.close();
     reply->close();
-    emit download_finished();
-    emit send_status( "upload successful." );
+    emit download_finished("transfer finished");
+    //emit send_status( "done..." );
 }
 
 void Networker::uploadProgress(qint64 bytesSent, qint64 bytesTotal){
@@ -55,7 +55,7 @@ void Networker::uploadProgress(qint64 bytesSent, qint64 bytesTotal){
         emit send_status(" check internet connection");
         return;
     }
-    emit send_status("Uploading: " + QString::number(bytesSent) + " of " +  QString::number(bytesTotal));
+    emit send_status("Uploading file: " + QString::number(bytesSent) + " of " +  QString::number(bytesTotal));
 
     
 }
@@ -67,10 +67,12 @@ void Networker::downloadProgress(qint64 bytesReceived, qint64 bytesTotal){
         emit send_status ("no data received... ");
         emit no_data();
         file.close();
-        if(file.size() == 0)
-            file.remove(); //if file empty, delete right away
+       
         return;
+        
     }
+    else
+        emit send_status("downloading... ");
 }
 
 void Networker::upload(QString location, QString path){

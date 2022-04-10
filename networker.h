@@ -24,7 +24,7 @@ void upload(QString location, QString path);
 
 signals:
     void no_data();
-    void download_finished();
+    void download_finished(QString message);
     void send_status(QString message);
 
 
