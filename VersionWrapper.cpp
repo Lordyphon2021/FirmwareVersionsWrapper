@@ -128,12 +128,8 @@ VersionWrapper::VersionWrapper(QWidget* parent)
 
     if (separator_string.isEmpty())
         ui->label_separator->setText("not set");
-
-
-
-
-
-    qDebug() << QCoreApplication::applicationDirPath() + "/background.jpg";
+    
+    //set background photo
     QPixmap bkgrd(QCoreApplication::applicationDirPath() + "/background_smaller.jpg");
     bkgrd = bkgrd.scaled(this->size(), Qt::IgnoreAspectRatio);
     QPalette pal;
@@ -155,11 +151,7 @@ void VersionWrapper::OnWrapButton() {
     QDir source(path_to_dir);
     QStringList files_in_source = source.entryList(QStringList() << "*.HEX" << "*.hex", QDir::Files);
     qDebug() << files_in_source;
-    
-   
-    
     QString seperator_string_saved = separator_string;
-    
     int version_number = 0;
     //open destination file
     QFile destin_file(QDir::homePath() + "/VersionWrapper/Converted/firmware_collection.txt");
@@ -189,7 +181,6 @@ void VersionWrapper::OnWrapButton() {
         ui->status_label->setText("wrapping " + filename);
         out << separator_string << '\n';
         
-
         QFile sourcefile(path_to_dir + "/" + filename);
 
         if (!sourcefile.open(QIODevice::ReadOnly | QIODevice::Text)) { //read .HEX as text file to get rid of blank lines
@@ -239,14 +230,12 @@ void VersionWrapper::OnActionSetSourceDir() {
     if (!new_source.exists())
         new_source.mkpath(".");
 
-
     ui->label_source_folder->setText(path_to_dir);
     QFile file(QDir::homePath() + "/VersionWrapper/Preferences/pref.txt");
     file.open(QIODevice::WriteOnly | QIODevice::Text);
     QTextStream out(&file);
     out << path_to_dir;
     file.close();
-
 }
 
 //preferences menu (set upload URL) triggered
@@ -262,8 +251,6 @@ void VersionWrapper::OnActionSeparatorString() {
     connect(sep_dial, SIGNAL(SeparatorStringSignal(QString)), this, SLOT(OnSeparatorStringSignal(QString)));
     sep_dial->exec();
 
-
-
 }
 
 //preferences menu (about) triggered
@@ -278,11 +265,7 @@ void VersionWrapper::OnActionServer() {
 
     ServerCredentialsDialog* serverdlg = new ServerCredentialsDialog;
     connect(serverdlg, SIGNAL(ServerCredentialsStrings(QString, QString)), this, SLOT(onCredentialsSignal(QString, QString)));
-
     serverdlg->exec();
-
-
-
 }
 
 //not needed...
@@ -306,7 +289,7 @@ void VersionWrapper::OnUrlSignal(QString _url) {
         file.close();
         //update member variable
         url = _url;
-
+        //update GUI
         ui->url_label->setText(_url);
     }
 }
@@ -349,9 +332,6 @@ void VersionWrapper::OnSeparatorStringSignal(QString _separator_string) {
 
         ui->label_separator->setText(separator_string);
     }
-
-
-
 
 }
 

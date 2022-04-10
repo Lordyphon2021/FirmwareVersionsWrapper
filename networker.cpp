@@ -51,9 +51,13 @@ void Networker::finished(QNetworkReply* reply){
 
 void Networker::uploadProgress(qint64 bytesSent, qint64 bytesTotal){
 
-    if (bytesTotal <= 0) return;
-
+    if (bytesTotal <= 0) {
+        emit send_status(" check internet connection");
+        return;
+    }
     emit send_status("Uploading: " + QString::number(bytesSent) + " of " +  QString::number(bytesTotal));
+
+    
 }
 
 void Networker::downloadProgress(qint64 bytesReceived, qint64 bytesTotal){
@@ -63,7 +67,8 @@ void Networker::downloadProgress(qint64 bytesReceived, qint64 bytesTotal){
         emit send_status ("no data received... ");
         emit no_data();
         file.close();
-        //file.remove(); //if file empty, delete right away
+        if(file.size() == 0)
+            file.remove(); //if file empty, delete right away
         return;
     }
 }
@@ -97,7 +102,7 @@ void Networker::wire(QNetworkReply* reply){
     connect(reply, &QNetworkReply::readyRead, this, &Networker::readyRead);
     connect(reply, &QNetworkReply::downloadProgress, this, &Networker::downloadProgress);
     connect(reply, &QNetworkReply::uploadProgress, this, &Networker::uploadProgress);
-   // connect(reply, QOverload<QNetworkReply::NetworkError>::of(&QNetworkReply::NetworkError()), this, &Networker::error);
-    connect(reply, &QNetworkReply::errorOccurred, this, &Networker::error);
+    connect(reply, QOverload<QNetworkReply::NetworkError>::of(&QNetworkReply::error), this, &Networker::error);
+    //connect(reply, &QNetworkReply::errorOccurred, this, &Networker::error);
 }
 
