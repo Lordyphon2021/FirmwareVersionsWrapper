@@ -225,10 +225,10 @@ void VersionWrapper::checkOnlineStatus() {
     QFile testfile(QDir::homePath() + "/VersionWrapper/testfile.txt");
     
     
-    if (testfile.size() == 0 || download_ctr == 7) {
-        download_ctr = 8;
+    if (testfile.size() == 0 || download_ctr == 5) {
+        download_ctr = 0;
         network->download("ftp://stefandeisenberger86881@ftp.lordyphon.com/firmware_versions/testfile.txt", QDir::homePath() + "/VersionWrapper/testfile.txt", user_name, password);
-
+        
     }
     while(!testfile.open(QIODevice::ReadOnly | QIODevice::Text))
         ;

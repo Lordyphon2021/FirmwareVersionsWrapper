@@ -41,6 +41,6 @@ private:
     QListWidget* debug_list = nullptr;
     QMessageBox error_message;
     void wire(QNetworkReply* reply);
-
+   
 };
 
