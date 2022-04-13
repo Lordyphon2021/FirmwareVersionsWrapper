@@ -108,6 +108,7 @@
     <QtMoc Include="SetUrlDialog.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="resource.h" />
     <ClInclude Include="ui_ServerCredentialsDialog.h" />
     <QtMoc Include="VersionWrapper.h" />
   </ItemGroup>
@@ -118,6 +119,12 @@
     <ClCompile Include="servercredentialsdialog.cpp" />
     <ClCompile Include="SetUrlDialog.cpp" />
     <ClCompile Include="VersionWrapper.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="FirmwareVersionsWrapper.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\OneDrive\Desktop\lordylink_dependencies\background_smaller.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
