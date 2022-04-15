@@ -147,8 +147,8 @@ void VersionWrapper::OnWrapButton() {
     QDir source(path_to_dir);
     QStringList files_in_source = source.entryList(QStringList() << "*.HEX" << "*.hex", QDir::Files);
     qDebug() << files_in_source;
-    QString seperator_string_saved = separator_string;
-    int version_number = 0;
+    //QString seperator_string_saved = separator_string;
+    //int version_number = 0;
     //open destination file
     QFile destin_file(QDir::homePath() + "/VersionWrapper/Converted/firmware_collection.txt");
     destin_file.open(QIODevice::WriteOnly | QIODevice::Text);
@@ -163,22 +163,14 @@ void VersionWrapper::OnWrapButton() {
     }
     //open each hex file and write content to destination file, divided by seperator line
     foreach(QString filename, files_in_source) {
-        QString version_number_string = QString::number(version_number++);
-        
-        //add prefix zero 
-        if (version_number < 10) {
-            version_number_string = "0" + QString::number(version_number);
-            separator_string +=  version_number_string; //write seperator line
-        }
-        else  
-            separator_string += version_number_string; //write seperator line
+       
         
         ui->status_label->setText("wrapping " + filename);
-        out << separator_string << '\n';
+        out << filename << Qt::endl;
         
         QFile sourcefile(path_to_dir + "/" + filename);
 
-        if (!sourcefile.open(QIODevice::ReadOnly | QIODevice::Text)) { //read .HEX as text file to get rid of blank lines
+        if (!sourcefile.open(QIODevice::ReadOnly)) { //read .HEX as text file to get rid of blank lines
             QMessageBox error;
             error.setText(" file not found!");
             error.exec();
@@ -189,7 +181,7 @@ void VersionWrapper::OnWrapButton() {
             out << templine;
         }
         sourcefile.close();
-        separator_string = seperator_string_saved;
+      
     } //END: foreach(QString filename, files_in_source){
     qDebug() << destin_file.size(); //testfile: 537092 bytes
     destin_file.close();
