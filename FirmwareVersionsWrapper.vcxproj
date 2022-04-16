@@ -90,16 +90,12 @@
     <QtRcc Include="FirmwareVersionsWrapper.qrc" />
   </ItemGroup>
   <ItemGroup>
-    <QtUic Include="Separator_dialog.ui" />
     <QtUic Include="ServerCredentialsDialog.ui" />
     <QtUic Include="SetUrlDialog.ui" />
     <QtUic Include="VersionWrapper.ui" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="networker.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <QtMoc Include="separator_dialog.h" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="servercredentialsdialog.h" />
@@ -115,7 +111,6 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="networker.cpp" />
-    <ClCompile Include="Separator_dialog.cpp" />
     <ClCompile Include="servercredentialsdialog.cpp" />
     <ClCompile Include="SetUrlDialog.cpp" />
     <ClCompile Include="VersionWrapper.cpp" />

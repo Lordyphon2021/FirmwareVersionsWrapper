@@ -33,13 +33,12 @@ public slots:
     void OnActionSetSourceDir();
     void OnActionAbout();
     void OnActionServer();
-    void OnActionSeparatorString();
+   
     //data from dialog and network status strings
     void OnUrlSignal(QString _url);
     void OnNetworkStatusSignal(QString status);
     void onCredentialsSignal(QString user, QString password);
-    void OnSeparatorStringSignal(QString _separator_string);
-
+   
 private:
     Ui::MainWindow *ui;
     QString url;
@@ -47,7 +46,6 @@ private:
     QString path_to_dir_last;
     QString user_name;
     QString password;
-    QString separator_string;
     SetUrlDialog* seturldlg = nullptr;
     QString backslashreplacer(QString input);
     bool connection_status = false;

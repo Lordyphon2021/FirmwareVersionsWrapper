@@ -26,7 +26,6 @@ VersionWrapper::VersionWrapper(QWidget* parent)
     QAction* source_path_triggered = new QAction("set source dir", this);
     QAction* url_path_triggered = new QAction("set upload URL and filename", this);
     QAction* server_credentials_triggered = new QAction("set server credentials", this);
-    QAction* separator_string_triggered = new QAction("set separator string", this);
     QAction* about_triggered = new QAction("about", this);
     QMenu* preferences = menuBar()->addMenu("&preferences");
 
@@ -34,7 +33,6 @@ VersionWrapper::VersionWrapper(QWidget* parent)
     preferences->addAction(source_path_triggered);
     preferences->addAction(url_path_triggered);
     preferences->addAction(server_credentials_triggered);
-    preferences->addAction(separator_string_triggered);
     preferences->addAction(about_triggered);
     ui->pushButton->hide();
     
@@ -42,7 +40,6 @@ VersionWrapper::VersionWrapper(QWidget* parent)
     connect(ui->WrapButton, SIGNAL(clicked()), this, SLOT(OnWrapButton()));
     connect(source_path_triggered, SIGNAL(triggered()), this, SLOT(OnActionSetSourceDir()));
     connect(url_path_triggered, SIGNAL(triggered()), this, SLOT(OnActionSetUrl()));
-    connect(separator_string_triggered, SIGNAL(triggered()), this, SLOT(OnActionSeparatorString()));
     connect(about_triggered, SIGNAL(triggered()), this, SLOT(OnActionAbout()));
     connect(server_credentials_triggered, SIGNAL(triggered()), this, SLOT(OnActionServer()));
     
@@ -111,16 +108,6 @@ VersionWrapper::VersionWrapper(QWidget* parent)
     }
     ui->label_server_credentials->setText("user: " + user_name + "  password: " + password);
 
-    //get saved separator string from preferences folder
-    QFile sep_file(QDir::homePath() + "/VersionWrapper/Preferences/separator.txt");
-    sep_file.open(QIODevice::ReadOnly | QIODevice::Text);
-    separator_string = sep_file.readLine();
-    ui->label_separator->setText(separator_string);
-    sep_file.close();
-
-    if (separator_string.isEmpty())
-        ui->label_separator->setText("not set");
-    
     //set background photo
     QPixmap bkgrd(QCoreApplication::applicationDirPath() + "/background_smaller.jpg");
     bkgrd = bkgrd.scaled(this->size(), Qt::IgnoreAspectRatio);
@@ -237,12 +224,6 @@ void VersionWrapper::checkOnlineStatus() {
     if(testfile.isOpen())
         testfile.close();
 
-    
-    //QNetworkAccessMAnager runs as own thread in background
-    //network->upload(url, path_to_file);
-
-
-
 }
 
 
@@ -275,12 +256,6 @@ void VersionWrapper::OnActionSetUrl() {
     connect(urldlg, SIGNAL(sendPathString(QString)), SLOT(OnUrlSignal(QString)));
     urldlg->exec();
 
-}
-void VersionWrapper::OnActionSeparatorString() {
-    
-    Separator_dialog* sep_dial = new Separator_dialog;
-    connect(sep_dial, SIGNAL(SeparatorStringSignal(QString)), this, SLOT(OnSeparatorStringSignal(QString)));
-    sep_dial->exec();
 }
 
 //preferences menu (about) triggered
@@ -350,18 +325,5 @@ void VersionWrapper::OnNetworkStatusSignal(QString status) {
 
 }
 
-void VersionWrapper::OnSeparatorStringSignal(QString _separator_string) {
-    if (!_separator_string.isEmpty()) {  //nothing changes on idle input
-        QFile file(QDir::homePath() + "/VersionWrapper/Preferences/separator.txt");
-        file.open(QIODevice::WriteOnly | QIODevice::Text);
-        QTextStream out(&file);
-        //save new URL to preferences
-        out << _separator_string;
-        file.close();
-        //update member variable
-        separator_string = _separator_string;
 
-        ui->label_separator->setText(separator_string);
-    }
-}
 

@@ -28,9 +28,6 @@
     </QtRcc>
   </ItemGroup>
   <ItemGroup>
-    <QtUic Include="Separator_dialog.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
     <QtUic Include="ServerCredentialsDialog.ui">
       <Filter>Form Files</Filter>
     </QtUic>
@@ -43,9 +40,6 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="networker.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="separator_dialog.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="servercredentialsdialog.h">
@@ -71,9 +65,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="networker.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Separator_dialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="servercredentialsdialog.cpp">
