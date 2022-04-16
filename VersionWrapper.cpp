@@ -132,10 +132,6 @@ void VersionWrapper::OnWrapButton() {
 
     QDir source(path_to_dir);
     QStringList files_in_source = source.entryList(QStringList() << "*.HEX" << "*.hex", QDir::Files);
-    qDebug() << files_in_source;
-    //QString seperator_string_saved = separator_string;
-    //int version_number = 0;
-    //open destination file
     QFile destin_file(QDir::homePath() + "/VersionWrapper/Converted/firmware_collection.txt");
     destin_file.open(QIODevice::WriteOnly | QIODevice::Text);
     //create textstream
@@ -150,7 +146,6 @@ void VersionWrapper::OnWrapButton() {
     //open each hex file and write content to destination file, divided by seperator line
     foreach(QString filename, files_in_source) {
        
-        
         ui->status_label->setText("wrapping " + filename);
         out << filename << Qt::endl;
         
@@ -169,23 +164,20 @@ void VersionWrapper::OnWrapButton() {
         sourcefile.close();
       
     } //END: foreach(QString filename, files_in_source){
-    qDebug() << destin_file.size(); //testfile: 537092 bytes
+    
     destin_file.close();
     ui->status_label->setText("done wrapping...");
     //make "check file" button visible
     ui->pushButton->show();
 
-    //QString upload_url = "ftp://stefandeisenberger86881@ftp.lordyphon.com/firmware_versions/firmware_versions.txt";
     QString path_to_file = QDir::homePath() + "/VersionWrapper/Converted/firmware_collection.txt";
 
-    
-    
     Networker* try_upload = new Networker;
     connect(try_upload, SIGNAL(send_status(QString)), this, SLOT(OnNetworkStatusSignal(QString)));
    
     //QNetworkAccessMAnager runs as own thread in background
     if(connection_status == true)
-        try_upload->upload(url, path_to_file);
+        try_upload->upload(url, path_to_file, user_name, password);
     else {
         QMessageBox error;
         error.setText("no internet connection!");

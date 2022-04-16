@@ -20,7 +20,7 @@ public:
     Networker(QObject* parent = nullptr);
 
 void download(QString location, QString path, QString username, QString password); //main method
-void upload(QString location, QString path);
+void upload(QString location, QString path, QString username, QString password);
 
 signals:
     void no_data();

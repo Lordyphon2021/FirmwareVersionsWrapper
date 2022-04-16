@@ -18,8 +18,6 @@ void Networker::download(QString location, QString path, QString username, QStri
 
     QUrl url(location);
     url.setPort(21);
-    //url.setUserName("stefandeisenberger86881");
-    //url.setPassword("3333Sync!!!");
     url.setUserName(username);
     url.setPassword(password);
 
@@ -75,7 +73,7 @@ void Networker::downloadProgress(qint64 bytesReceived, qint64 bytesTotal){
         emit send_status("downloading... ");
 }
 
-void Networker::upload(QString location, QString path){
+void Networker::upload(QString location, QString path, QString username, QString password){
     file.setFileName(path);
 
     if(!file.open(QIODevice::ReadOnly)){
@@ -85,8 +83,8 @@ void Networker::upload(QString location, QString path){
 
     QUrl url(location);
     url.setPort(21);
-    url.setUserName("stefandeisenberger86881");
-    url.setPassword("3333Sync!!!");
+    url.setUserName(username);
+    url.setPassword(password);
 
     QNetworkRequest request = QNetworkRequest(url);
     QNetworkReply* reply = manager.put(request, &file);
@@ -105,6 +103,6 @@ void Networker::wire(QNetworkReply* reply){
     connect(reply, &QNetworkReply::downloadProgress, this, &Networker::downloadProgress);
     connect(reply, &QNetworkReply::uploadProgress, this, &Networker::uploadProgress);
     connect(reply, QOverload<QNetworkReply::NetworkError>::of(&QNetworkReply::error), this, &Networker::error);
-    //connect(reply, &QNetworkReply::errorOccurred, this, &Networker::error);
+    
 }
 
