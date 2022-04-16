@@ -10,7 +10,6 @@
 #include <QPixmap>
 #include <QStandardPaths>
 #include "servercredentialsdialog.h"
-#include "separator_dialog.h"
 #include <QTimer>
 
 
