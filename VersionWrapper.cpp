@@ -100,11 +100,11 @@ VersionWrapper::VersionWrapper(QWidget* parent)
     user_name = cred.readLine();
     password = cred.readLine();
 
-    //better way to do this?
-    for (int i = 0; i < user_name.size(); ++i) {
-        if (user_name.at(i) == '\n')
-            user_name.remove(i, 1);
-    }
+   
+    //remove \n from username string:
+    if(user_name.back() == '\n')
+        user_name.remove(user_name.back());
+
     ui->label_server_credentials->setText("user: " + user_name + "  password: " + password);
 
     //set background photo
@@ -123,6 +123,11 @@ VersionWrapper::VersionWrapper(QWidget* parent)
 
 VersionWrapper::~VersionWrapper()
 {
+    QFile testfile(QDir::homePath() + "/VersionWrapper/testfile.txt");
+    if (testfile.exists())
+        testfile.remove();
+    
+    
     delete ui;
 }
 
@@ -206,6 +211,11 @@ void VersionWrapper::checkOnlineStatus() {
     if (testfile.readLine() == "onlinechecker") {
         connection_status = true;
         ui->status_label->setText( "online" );
+        if (testfile.isOpen()) {
+            testfile.close();
+           
+        }
+    
     }
     else {
         connection_status = false;
