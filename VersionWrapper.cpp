@@ -253,7 +253,7 @@ void VersionWrapper::OnActionSetUrl() {
 void VersionWrapper::OnActionAbout() {
 
     QMessageBox info;
-    info.setText("this piece of junk was written by the mighty lord deisen");
+    info.setText("(c)2022 by Stefan Plattner-Deisenberger\nwww.lordyphon.com");
     info.exec();
 }
 
