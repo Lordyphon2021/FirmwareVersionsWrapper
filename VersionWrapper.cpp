@@ -294,6 +294,7 @@ void VersionWrapper::OnUrlSignal(QString _url) {
 void VersionWrapper::onCredentialsSignal(QString _user, QString _password) {
 
     if (!_user.isEmpty() || _password.isEmpty()) {  //nothing changes on idle input
+       
         QFile file(QDir::homePath() + "/VersionWrapper/Preferences/credentials.txt");
         file.open(QIODevice::WriteOnly | QIODevice::Text);
         QTextStream out(&file);
